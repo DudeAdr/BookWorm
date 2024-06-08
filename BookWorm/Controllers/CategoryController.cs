@@ -32,10 +32,6 @@ namespace BookWorm.Controllers
             {
                 ModelState.AddModelError("name", "The Display Order can't exactly match the Name");
             }
-            if (categoryObj.DisplayOrder.ToString() == "0")
-            {
-                ModelState.AddModelError("displayorder", "The Display Order can't be empty");
-            }
 
             if (ModelState.IsValid)
             {
