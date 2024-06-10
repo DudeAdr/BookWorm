@@ -1,4 +1,4 @@
-using BookWorm.Data;
+using BookWorm.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

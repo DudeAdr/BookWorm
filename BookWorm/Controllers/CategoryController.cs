@@ -1,8 +1,8 @@
-﻿using BookWorm.Data;
-using BookWorm.Models;
+﻿using BookWorm.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using BookWorm.DataAccess.Data;
 
 namespace BookWorm.Controllers
 {

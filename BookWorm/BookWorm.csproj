@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BookWorm.DataAccess\BookWorm.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
