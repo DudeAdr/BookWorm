@@ -3,20 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using BookWorm.DataAccess.Data;
+using BookWorm.DataAccess.Repository.IRepository;
 
 namespace BookWorm.Controllers
 {
     public class CategoryController : Controller
     {
-        private ApplicationDbContext dbContext;
-        public CategoryController(ApplicationDbContext DbContext)
+        private readonly ICategoryRepository categoryRepository;
+        public CategoryController(ICategoryRepository CategoryRepository)
         {
-            dbContext = DbContext;
+            categoryRepository = CategoryRepository;
         }
 
         public IActionResult Index()
         {
-            var CategoryList = dbContext.Categories.ToList();
+            var CategoryList = categoryRepository.GetAll();
             return View(CategoryList);
         }
 
@@ -35,8 +36,8 @@ namespace BookWorm.Controllers
 
             if (ModelState.IsValid)
             {
-                dbContext.Categories.Add(categoryObj);
-                dbContext.SaveChanges();
+                categoryRepository.Add(categoryObj);
+                categoryRepository.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -49,7 +50,7 @@ namespace BookWorm.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = dbContext.Categories.FirstOrDefault(c => c.Id == id);
+            Category? categoryFromDb = categoryRepository.Get(c => c.Id == id);
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -62,8 +63,8 @@ namespace BookWorm.Controllers
         {
             if (ModelState.IsValid)
             {
-                dbContext.Categories.Update(categoryObj);
-                dbContext.SaveChanges();
+                categoryRepository.Update(categoryObj);
+                categoryRepository.Save();
                 TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
@@ -76,7 +77,7 @@ namespace BookWorm.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = dbContext.Categories.FirstOrDefault(c => c.Id == id);
+            Category? categoryFromDb = categoryRepository.Get(c => c.Id == id);
 
             if (categoryFromDb == null)
             {
@@ -88,13 +89,13 @@ namespace BookWorm.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteRecord(int? id)
         {
-            Category? obj = dbContext.Categories.Find(id);
+            Category? obj = categoryRepository.Get(u => u.Id == id);
             if (obj == null)
             {
                 return NotFound();
             }
-            dbContext.Categories.Remove(obj);
-            dbContext.SaveChanges();
+            categoryRepository.Remove(obj);
+            categoryRepository.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }
