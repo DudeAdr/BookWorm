@@ -11,11 +11,6 @@ namespace BookWorm.DataAccess.Repository
         {
             dbContext = DbContext;
         }
-        public void Save()
-        {
-            dbContext.SaveChanges();
-        }
-
         public void Update(Category category)
         {
             dbContext.Update(category);
