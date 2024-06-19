@@ -3,6 +3,7 @@ using BookWorm.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookWorm.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240616175220_Creating Product Table")]
+    partial class CreatingProductTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,10 +77,6 @@ namespace BookWorm.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -111,7 +110,6 @@ namespace BookWorm.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "F. Scott Fitzgerald",
-                            Category = "Novel",
                             Description = "A novel written by American author F. Scott Fitzgerald.",
                             ISBN = "9780743273565",
                             ListPrice = 10.99,
@@ -124,7 +122,6 @@ namespace BookWorm.DataAccess.Migrations
                         {
                             Id = 2,
                             Author = "Harper Lee",
-                            Category = "Novel",
                             Description = "A novel by Harper Lee published in 1960.",
                             ISBN = "9780061120084",
                             ListPrice = 14.99,
@@ -137,7 +134,6 @@ namespace BookWorm.DataAccess.Migrations
                         {
                             Id = 3,
                             Author = "George Orwell",
-                            Category = "SciFi",
                             Description = "A dystopian social science fiction novel and cautionary tale by the English writer George Orwell.",
                             ISBN = "9780451524935",
                             ListPrice = 15.99,
@@ -150,7 +146,6 @@ namespace BookWorm.DataAccess.Migrations
                         {
                             Id = 4,
                             Author = "Jane Austen",
-                            Category = "Romantic Novel",
                             Description = "A romantic novel of manners written by Jane Austen.",
                             ISBN = "9781503290563",
                             ListPrice = 9.9900000000000002,

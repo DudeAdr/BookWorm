@@ -1,43 +1,35 @@
-﻿using BookWorm.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using BookWorm.DataAccess.Data;
+﻿using BookWorm.DataAccess.Data;
 using BookWorm.DataAccess.Repository.IRepository;
+using BookWorm.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookWorm.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
-    {
+    public class ProductController : Controller
+    { 
         private readonly IUnitOfWork unitOfWork;
-        public CategoryController(IUnitOfWork UnitOfWork)
+        public ProductController(IUnitOfWork UnitOfWork)
         {
             unitOfWork = UnitOfWork;
         }
-
         public IActionResult Index()
         {
-            var CategoryList = unitOfWork.Category.GetAll().ToList();
-            return View(CategoryList);
+            var productList = unitOfWork.Product.GetAll().ToList();
+            return View(productList);
         }
-
+        
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Category categoryObj)
+        public IActionResult Create(Product productObj)
         {
-            if (categoryObj.Name == categoryObj.DisplayOrder.ToString())
+            if(ModelState.IsValid)
             {
-                ModelState.AddModelError("name", "The Display Order can't exactly match the Name");
-            }
-
-            if (ModelState.IsValid)
-            {
-                unitOfWork.Category.Add(categoryObj);
+                unitOfWork.Product.Add(productObj);
                 unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
@@ -45,26 +37,26 @@ namespace BookWorm.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int? id) 
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-            Category? categoryFromDb = unitOfWork.Category.Get(c => c.Id == id);
-            if (categoryFromDb == null)
+            Product? productFromDb = unitOfWork.Product.Get(c => c.Id == id);
+            if (productFromDb == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(productFromDb);
         }
 
         [HttpPost]
-        public IActionResult Edit(Category categoryObj)
+        public IActionResult Edit(Product productObj)
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.Category.Update(categoryObj);
+                unitOfWork.Product.Update(productObj);
                 unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
@@ -72,32 +64,32 @@ namespace BookWorm.Areas.Admin.Controllers
             return View();
         }
 
+
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
-            Category? categoryFromDb = unitOfWork.Category.Get(c => c.Id == id);
-
-            if (categoryFromDb == null)
+            Product? productFromDb = unitOfWork.Product.Get(c => c.Id == id);
+            if (productFromDb == null)
             {
                 return NotFound();
             }
-            return View(categoryFromDb);
+            return View(productFromDb);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteRecord(int? id)
         {
-            Category? obj = unitOfWork.Category.Get(u => u.Id == id);
-            if (obj == null)
+            Product? productFromDb = unitOfWork.Product.Get(c => c.Id == id);
+            if (productFromDb == null)
             {
                 return NotFound();
             }
-            unitOfWork.Category.Remove(obj);
+            unitOfWork.Product.Remove(productFromDb);
             unitOfWork.Save();
-            TempData["success"] = "Category deleted successfully";
+            TempData["success"] = "Category removed successfully";
             return RedirectToAction("Index");
         }
     }
