@@ -24,55 +24,82 @@ namespace BookWorm.DataAccess.Data
                 new Product
                 {
                     Id = 1,
-                    Title = "The Great Gatsby",
-                    Description = "A novel written by American author F. Scott Fitzgerald.",
-                    ISBN = "9780743273565",
-                    Author = "F. Scott Fitzgerald",
-                    ListPrice = 10.99,
-                    Price = 8.99,
-                    Price50 = 7.99,
-                    Price100 = 6.99,
-                    Category = "Novel"
+                    Title = "Fortune of Time",
+                    Author = "Billy Spark",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "SWD9999001",
+                    ListPrice = 99,
+                    Price = 90,
+                    Price50 = 85,
+                    Price100 = 80,
+                    CategoryId = 1
                 },
                 new Product
                 {
                     Id = 2,
-                    Title = "To Kill a Mockingbird",
-                    Description = "A novel by Harper Lee published in 1960.",
-                    ISBN = "9780061120084",
-                    Author = "Harper Lee",
-                    ListPrice = 14.99,
-                    Price = 12.99,
-                    Price50 = 10.99,
-                    Price100 = 9.99,
-                    Category = "Novel"
+                    Title = "Dark Skies",
+                    Author = "Nancy Hoover",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "CAW777777701",
+                    ListPrice = 40,
+                    Price = 30,
+                    Price50 = 25,
+                    Price100 = 20,
+                    CategoryId = 1
                 },
                 new Product
                 {
                     Id = 3,
-                    Title = "1984",
-                    Description = "A dystopian social science fiction novel and cautionary tale by the English writer George Orwell.",
-                    ISBN = "9780451524935",
-                    Author = "George Orwell",
-                    ListPrice = 15.99,
-                    Price = 13.99,
-                    Price50 = 11.99,
-                    Price100 = 10.99,
-                    Category = "SciFi"
+                    Title = "Vanish in the Sunset",
+                    Author = "Julian Button",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "RITO5555501",
+                    ListPrice = 55,
+                    Price = 50,
+                    Price50 = 40,
+                    Price100 = 35,
+                    CategoryId = 1
                 },
                 new Product
                 {
                     Id = 4,
-                    Title = "Pride and Prejudice",
-                    Description = "A romantic novel of manners written by Jane Austen.",
-                    ISBN = "9781503290563",
-                    Author = "Jane Austen",
-                    ListPrice = 9.99,
-                    Price = 7.99,
-                    Price50 = 6.99,
-                    Price100 = 5.99,
-                    Category = "Romantic Novel"
-                });
+                    Title = "Cotton Candy",
+                    Author = "Abby Muscles",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "WS3333333301",
+                    ListPrice = 70,
+                    Price = 65,
+                    Price50 = 60,
+                    Price100 = 55,
+                    CategoryId = 2
+                },
+                new Product
+                {
+                    Id = 5,
+                    Title = "Rock in the Ocean",
+                    Author = "Ron Parker",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "SOTJ1111111101",
+                    ListPrice = 30,
+                    Price = 27,
+                    Price50 = 25,
+                    Price100 = 20,
+                    CategoryId = 2
+                },
+                new Product
+                {
+                    Id = 6,
+                    Title = "Leaves and Wonders",
+                    Author = "Laura Phantom",
+                    Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
+                    ISBN = "FOT000000001",
+                    ListPrice = 25,
+                    Price = 23,
+                    Price50 = 22,
+                    Price100 = 20,
+                    CategoryId = 3
+                }
+                );
         }
     }
 }
