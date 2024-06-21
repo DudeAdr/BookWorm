@@ -1,13 +1,15 @@
 ﻿using BookWorm.DataAccess.Data;
 using BookWorm.DataAccess.Repository.IRepository;
 using BookWorm.Models;
+using BookWorm.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookWorm.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ProductController : Controller
-    { 
+    {
         private readonly IUnitOfWork unitOfWork;
         public ProductController(IUnitOfWork UnitOfWork)
         {
@@ -16,26 +18,47 @@ namespace BookWorm.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var productList = unitOfWork.Product.GetAll().ToList();
+
             return View(productList);
         }
-        
+
         public IActionResult Create()
         {
-            return View();
+            ProductVM productVM = new()
+            {
+                CategoryList = unitOfWork.Category.GetAll().ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                Product = new Product()
+            };
+
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult Create(Product productObj)
+        public IActionResult Create(ProductVM productObj)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                unitOfWork.Product.Add(productObj);
+                unitOfWork.Product.Add(productObj.Product);
                 unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+            else
+            {
+                productObj.CategoryList = unitOfWork.Category.GetAll().ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+            };
+
+            return View(productObj);
         }
+    
 
         public IActionResult Edit(int? id) 
         {
