@@ -4,6 +4,7 @@ using BookWorm.Models;
 using BookWorm.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BookWorm.Areas.Admin.Controllers
 {
@@ -60,6 +61,16 @@ namespace BookWorm.Areas.Admin.Controllers
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string productPath = Path.Combine(wwwRootPath, @"images\product");
 
+                    if(!string.IsNullOrEmpty(productObj.Product.ImageUrl)) 
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath,productObj.Product.ImageUrl.TrimStart('\\'));
+
+                        if(System.IO.File.Exists(oldImagePath)) 
+                        { 
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
                     using (var fileStream = new FileStream(Path.Combine(productPath, fileName),FileMode.Create))
                     {
                         file.CopyTo(fileStream);
@@ -67,8 +78,16 @@ namespace BookWorm.Areas.Admin.Controllers
 
                     productObj.Product.ImageUrl = @"\images\product\" + fileName;
                 }
-
-                unitOfWork.Product.Update(productObj.Product);
+                
+                if(productObj.Product.Id == 0)
+                {
+                    unitOfWork.Product.Add(productObj.Product);
+                }
+                else
+                {
+                    unitOfWork.Product.Update(productObj.Product);
+                }
+                
                 unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
