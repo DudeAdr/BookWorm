@@ -11,9 +11,12 @@ namespace BookWorm.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
-        public ProductController(IUnitOfWork UnitOfWork)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public ProductController(IUnitOfWork UnitOfWork, IWebHostEnvironment WebHostEnvironment)
         {
             unitOfWork = UnitOfWork;
+            webHostEnvironment = WebHostEnvironment;
+
         }
         public IActionResult Index()
         {
@@ -22,27 +25,50 @@ namespace BookWorm.Areas.Admin.Controllers
             return View(productList);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id) //Update and insert
         {
             ProductVM productVM = new()
             {
-                CategoryList = unitOfWork.Category.GetAll().ToList().Select(u => new SelectListItem
+                CategoryList = unitOfWork.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
                 }),
                 Product = new Product()
             };
-
-            return View(productVM);
+            if(id == null || id == 0)
+            {
+                //create
+                return View(productVM);
+            }
+            else
+            {
+                //update
+                productVM.Product = unitOfWork.Product.Get(u => u.Id == id);
+                return View(productVM);
+            }          
         }
 
         [HttpPost]
-        public IActionResult Create(ProductVM productObj)
+        public IActionResult Upsert(ProductVM productObj, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                unitOfWork.Product.Add(productObj.Product);
+                string wwwRootPath = webHostEnvironment.WebRootPath;
+                if(file != null) 
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\product");
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName),FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    productObj.Product.ImageUrl = @"\images\product\" + fileName;
+                }
+
+                unitOfWork.Product.Update(productObj.Product);
                 unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
@@ -58,35 +84,6 @@ namespace BookWorm.Areas.Admin.Controllers
 
             return View(productObj);
         }
-    
-
-        public IActionResult Edit(int? id) 
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Product? productFromDb = unitOfWork.Product.Get(c => c.Id == id);
-            if (productFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(productFromDb);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Product productObj)
-        {
-            if (ModelState.IsValid)
-            {
-                unitOfWork.Product.Update(productObj);
-                unitOfWork.Save();
-                TempData["success"] = "Category updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
-
 
         public IActionResult Delete(int? id)
         {
